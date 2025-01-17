@@ -74,7 +74,7 @@ public class HeightToolCustomEditor : Editor
     {
         var obj = new GameObject($"Projector: {orderList.index+1}");
         obj.transform.parent = targetObject.transform;
-        obj.transform.localPosition = new Vector3(100, 1000, 100);
+        obj.transform.localPosition = new Vector3(100, targetObject.gizmoHeight, 100);
         targetObject.projectors.Add(new ProjectorSerialize
         {
             projectorObject = obj,

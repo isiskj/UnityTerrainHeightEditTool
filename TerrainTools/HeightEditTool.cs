@@ -9,6 +9,8 @@ public class HeightEditTool : MonoBehaviour
 {
     [SerializeField]
     private RenderTexture sourceTerrainHeight;
+    [SerializeField]
+    public float gizmoHeight = 500;
 
     private Terrain terrainReference;
     private Vector2 terrainSize;
@@ -19,7 +21,6 @@ public class HeightEditTool : MonoBehaviour
     private Vector2Int dest;
     [HideInInspector]
     public List<ProjectorSerialize> projectors = new List<ProjectorSerialize>();
-    public Button myButton; // インスペクターからボタンを参照するためのフィールド 
 
     private bool isInitialize = false;
 
@@ -179,10 +180,9 @@ public class HeightEditTool : MonoBehaviour
         {
             return;
         }
-        var length = 1000;
         foreach (ProjectorSerialize pj in projectors)
         {
-            var size = new Vector3(pj.scaleXY.x, 1000, pj.scaleXY.y);
+            var size = new Vector3(pj.scaleXY.x, gizmoHeight, pj.scaleXY.y);
             var trans = pj.projectorObject.transform;
             Gizmos.color = pj.gizmoColor;
             Matrix4x4 originalMatrix = Gizmos.matrix; // 新しい行列を設定：位置、回転（Y軸）、スケールを含む
@@ -190,7 +190,7 @@ public class HeightEditTool : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0, currentRotation.eulerAngles.y, 0);
             Gizmos.matrix = Matrix4x4.TRS(trans.position, rotation * Quaternion.Euler(0, trans.rotation.y, 0), trans.lossyScale);
             // ボックスの中心をオブジェクトの下方向に移動
-            Vector3 boxCenter = new Vector3(0, -length / 2, 0);
+            Vector3 boxCenter = new Vector3(0, -gizmoHeight / 2, 0);
             Gizmos.DrawWireCube(boxCenter, size);
             // 元のギズモ行列を復元
             Gizmos.matrix = originalMatrix;
